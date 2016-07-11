@@ -390,4 +390,56 @@ export const ENABLE_BTN = 'ENABLE_BTN';
 
 这个一个把button的状态交给redux管理的小例子。
 
+### 通过一个toast的例子，我们来认识一下async action
+
+前面的例子两个action都是立马就触发了reducer，程序中大多数的action都是这种类型
+
+有时后我们希望做一些异步的操作后再触发reducer，比如说网络请求的回调函数中。
+
+这里我们选用toast作为例子，他符合异步的要求（2秒后消失）。
+
+#### 数据结构是程序的灵魂，在开始写任何界面之前，先思考一下我们的数据，也就是state长什么样纸
+
+```
+const initialState = Immutable.fromJS({
+  show: false,
+  timestamp: 0,
+  text: '提示',
+});
+```
+
+我们用上面的数据结构来支撑我们的toast
+
+1. show 控制显示和隐藏
+2. 由于toast的显示和消失是成对出现的，我们用timestamp在处理消失的时候判断是不是同一次toast
+3. text 没啥好说的，界面上展示的信息
+
+#### 最核心的代码，reducer部分逻辑如下
+
+```
+export default (state = initialState, action) => {
+  let newState = state;
+  switch (action.type) {
+    case SHOW_TOAST:
+      newState = state.merge({
+        show: true,
+        timestamp: action.payload.timestamp,
+        text: action.payload.text,
+      });
+      return newState;
+
+    case HIDE_TOAST:
+      const timestamp = state.get('timestamp');
+      if (timestamp === action.payload.timestamp) {
+        newState = state.set('show', false);
+      }
+      return newState;
+    default :
+      return state;
+  }
+};
+```
+
+
+
 
