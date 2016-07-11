@@ -310,4 +310,11 @@ npm run dev, 然后打开 http://localhost:8080/webpack-dev-server/lifecycle.htm
 让我们通过一个例子来看看效果，代码在father_child目录
 npm run dev, 然后打开 http://localhost:8080/webpack-dev-server/father.html
 
+### 通过上面的例子我们已经用到了state和props,我们总结一下她们的区别
+
+1. state和props都是存储了数据和函数的js对象，render方法中根据state和props上的数据做一些逻辑判断，渲染不同的界面
+2. props只能通过父组件传递下来，不能自己更改
+3. state可以通过setState方法更改,是用于组件自己更新自己。
+4. 一般来说state存储的是程序的业务逻辑，而props只是展示逻辑
+5. redux和flux架构将state拿到store中单独存放，区分出container和component的概念，因此state已经交给redux管理，很好再自己setState了。
 
