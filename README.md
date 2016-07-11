@@ -318,3 +318,76 @@ npm run dev, 然后打开 http://localhost:8080/webpack-dev-server/father.html
 4. 一般来说state存储的是程序的业务逻辑，而props只是展示逻辑
 5. redux和flux架构将state拿到store中单独存放，区分出container和component的概念，因此state已经交给redux管理，很好再自己setState了。
 
+
+## redux (http://redux.js.org)
+
+redux是基于flux架构的一个状态管理框架
+
+我们先来看一张flux架构图 （从flux的github扣来的）
+
+<img src="./assets/img/flux-diagram-white-background.png" />
+
+flux的核心概念是数据的单向流动，通过发起action去改变store，store上数据更新后触发组件的redner,达到更新界面的效果
+
+flux有官方的一个简单实现，但是用起来太啰嗦，所以大家都选择使用redux
+
+对比flux,redux只有一个store,并增加了reducer,container还有中间件的概念
+
+### 简单介绍redux几个概念
+
+1. store 存放全局的数据，所有组件的state都在这里统一管理。
+2. container 从store上获取数据的组件，拿到数据后通过props传递给comonent
+3. component 只负责展示逻辑的组件，通过props获取数据，不直接跟store打交道
+4. action 就是一个简单的js对象，代表一次操作（用户点击，网络请求等），通过dispatch函数分发到reducer,reducer在根据action的内容去改变store上的数据。
+5. reducer一个处理action的地方，根据action返回一个新的state,改变store, 然后container会感知到store的变化，如果container所取的state发生变化，就会触发render方法刷新界面。
+6. connect 是react-redux中的一个函数，他就是container跟store的桥梁，他接受mapStateToProps跟mapDispatchToProps两个函数作为参数，store变化了就调用这两个函数，将新的state变成props传递给container
+7. 中间件，这个redux偷师了express,主要用作在action分发的途中做一些处理，中间件按顺序一级一级的调用
+
+### 让我们通过一个麻雀虽小，五脏俱全的例子来了解一下一个真实的redux项目
+
+#### 首先安装依赖包
+
+npm install redux react-redux redux-logger redux-thunk immutable --save --verbose
+
+上面react-logger是一个打印action日志的中间件，redux-thunk是一个异步action的中间件
+
+这里跟immutablejs (https://facebook.github.io/immutable-js/docs/#/Map)配合使用
+
+1. immutablejs 是react全家桶的一份子，react对他支持很好
+2. immutablejs 可以提高程序的渲染效率
+3. immutablejs 有一系列操作集合的方法，很好用（map,reduce,filter,every...)
+4. immutablejs 其实就是提供了一堆常用的不可变的数据结构
+5. 对immutablejs对象的操作会返回一个新的对象，而不是直接改变原对象
+6. 我们主要在store的state上用immutablejs
+7. 更多内容参见 [immutable.md](./immutable.md)
+
+#### 我们先规范一下我们的action数据结构
+
+```
+{
+  type: xxx,
+  payload: xxx,
+  error: xxx,
+}
+
+```
+
+type 作为action的唯一标示，payload存放数据，error存放错误信息
+
+#### 为了防止type冲突，我们专门用一个文件来存放action types
+
+新建文件contants/actionType.js
+
+内容如下,先定义两个简单的action类型
+
+```
+export const DISABLE_BTN = 'DISABLE_BTN';
+export const ENABLE_BTN = 'ENABLE_BTN';
+
+```
+
+#### 其他部分代码我们培训时再讲
+
+这个一个把button的状态交给redux管理的小例子。
+
+
