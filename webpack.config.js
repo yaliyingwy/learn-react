@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const path = require('path');
 
 const entries = {
-	lifecycle: 'src/containers/lifecycle/lifecycle.js',
+	lifecycle: ['src/containers/lifecycle/lifecycle.js'],
 }
 
 const babelQuery = {

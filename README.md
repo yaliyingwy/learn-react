@@ -210,7 +210,7 @@ webpack主要通过一个webpack.config.js的文件来配置（当然可以指�
     ```
 
 8 为package.js 添加build和dist两个构建任务
-
+    
     ```
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
@@ -219,3 +219,62 @@ webpack主要通过一个webpack.config.js的文件来配置（当然可以指�
     },
     npm run build 和 npm run dist 分别试试，走你！
     ```
+
+
+### webpack-dev-server
+
+在上面的例子中，每改一点代码都要重新编译一次才能看到效果，而且随着文件增多，编译的过程很慢。
+这里便轮到我们的开发神器webpack-dev-server登场了
+
+前面我们已经安装过对应的包了，这里我们单独写一个js脚本来配置
+
+1. 新建scripts目录，在下面新建一个dev.js文件
+
+    ```
+    const config = require('../webpack.config.js');
+    const WebpackDevServer = require('webpack-dev-server');
+    const webpack = require('webpack');
+
+    Object.keys(config.entry).forEach((key) => {
+      config.entry[key].unshift(require.resolve('webpack-dev-server/client') + '?http://localhost:8080', require.resolve('webpack/hot/dev-server'));
+    });
+
+    config.debug = true;
+
+    config.devtool = 'eval-cheap-module-source-map';
+
+    config.plugins.push(
+      new webpack.HotModuleReplacementPlugin()
+    );
+
+    const devServerConfig = {
+      contentBase: config.output.path,
+      hot: true,
+      historyApiFallback: true,
+      stats: {
+        colors: true
+      }
+    };
+
+    new WebpackDevServer(webpack(config), devServerConfig)
+      .listen(8080, 'localhost', (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+
+    整个脚本代码并不多，主要是往entry里面插入了两个热替换的脚本
+    webpack.config.js中的entry也需要改成数组
+    const entries = {
+      lifecycle: ['src/containers/lifecycle/lifecycle.js'],
+    }
+    ```
+
+2. 让我们在package.json中添加一条dev任务
+
+    ```
+    "dev": "DEBUG=true node scripts/dev.js"
+
+    好了，npm run dev 然后随便改点代码试试
+    ```
+

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "DEBUG=true node node_modules/webpack/bin/webpack.js",
-    "dist": "DEBUG=false node node_modules/webpack/bin/webpack.js"
+    "dist": "DEBUG=false node node_modules/webpack/bin/webpack.js",
+    "dev": "DEBUG=true node scripts/dev.js"
   },
   "author": "",
   "license": "ISC",
