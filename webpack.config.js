@@ -7,6 +7,7 @@ const path = require('path');
 
 const entries = {
 	lifecycle: ['src/containers/lifecycle/lifecycle.js'],
+  father: ['src/containers/father_child/father.js'],
 }
 
 const babelQuery = {
