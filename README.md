@@ -516,3 +516,32 @@ export const NO_CACHE = 'NO_CACHE'; // 不使用缓存
 基本上可以按使用jquery和完全不使用jquery划分为两个时代
 
 如果简单的一句“你们用的h5开发吗?“，根本就不知道怎么回答，只能”对，我们就是用的h5“蒙混过去
+
+
+## 利用eslint和pre-commit规范你们的代码
+
+### 安装依赖包
+
+```
+npm install  eslint eslint-config-airbnb babel-eslint  pre-commit --save-dev --verbose
+```
+
+因为上面依赖关系有bug,所以npm装完后会报错，不过不影响使用，只是不会把依赖写入package.json文件，需要注意一下
+
+### 添加lint任务 
+
+```
+ "lint": "node node_modules/eslint/bin/eslint.js --ext .js -c .eslintrc src"
+```
+
+npm run lint 看看检查结果。
+
+### 在package.json中加入pre-commit
+
+```
+  "pre-commit": [
+    "lint"
+  ],
+```
+
+这样每次提交代码，都会先进行lint检查，通不过检查无法提交。

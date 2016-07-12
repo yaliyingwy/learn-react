@@ -1,0 +1,16 @@
+{
+  "extends": "eslint-config-airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "new-cap": [1],
+    "react/jsx-boolean-value": [1],
+    "react/no-did-mount-set-state": [1],
+    "no-console": [0],
+    "react/jsx-no-bind": [0],
+    "react/prefer-stateless-function": [1],
+    "no-alert": [2],
+    "no-unsafe-finally": [1],
+    "consistent-return": [1],
+    "max-len": [1]
+  }
+}
