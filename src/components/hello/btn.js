@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Spinner from './spinner';
 
 class Button extends Component {
 
@@ -7,6 +8,7 @@ class Button extends Component {
 			enable,
 			clickFunc, 
 			title,
+			busy,
 		} = this.props;
 
 		const cls = `btn ${enable ? '' : 'disabled'}`;
@@ -14,12 +16,17 @@ class Button extends Component {
 			<div 
 			  className={cls} 
 			  onClick={() => {
-			  	if (enable) {
+			  	if (enable && !busy) {
 			  		clickFunc();
 			  	}
 			  }}
 			>
 				{title}
+				{(() => {
+					if (busy) {
+						return <Spinner />
+					}
+				})()}
 			</div>
 		);
 	}
@@ -29,6 +36,11 @@ Button.propTypes = {
   clickFunc: React.PropTypes.func.isRequired,
   enable: React.PropTypes.bool.isRequired,
   title: React.PropTypes.string.isRequired,
-}
+  busy: React.PropTypes.bool.isRequired,
+};
+
+Button.defaultProps = {
+	busy: false,
+};
 
 export default Button;
