@@ -2,11 +2,12 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
+import api from '../middleware/api';
 
 const store = createStore(
   rootReducer,
   {},
-  applyMiddleware(thunkMiddleware, createLogger({
+  applyMiddleware(thunkMiddleware, api, createLogger({
     duration: true,
     // 打印immutablejs的state
     stateTransformer: (state) => {

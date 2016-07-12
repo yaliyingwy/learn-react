@@ -454,4 +454,45 @@ export default (state = initialState, action) => {
 
 由于代码逻辑跟toast差不多，这里就不赘述了。
 
+### 上面的例子中用到了网络请求，下面我们来封装一下网络请求的action,顺便了解一下中间件的编写
 
+关于网络请求的封装，我整理了以下几点需求
+
+1. 功能强大却简单好用，能给默认参数的就给出默认参数（封装其他东西也都一样）
+2. 封装缓存逻辑
+3. 封装loading框
+4. 默认的出错处理
+5. 可以设置成功和失败的处理逻辑
+6. 防止重复提交
+7. 可以设置超时时间
+
+由于时间仓促，6，7我们就不做了，6的实现其实跟2差不多
+
+我们还是先来约定以下网络请求action的参数
+
+```
+{
+  type: CALL_API,
+  payload: {
+    api: //接口地址
+    headers: // 请求header
+    loading: //是否显示loading
+    success: 成功的action
+    fail: 失败的action
+    cache: 缓存类型 
+  }
+}
+```
+
+看着参数挺多，其实就api和success 是必须的，其他都有默认值
+
+cache的可选策略如下
+
+```
+export const USE_LATEST = 'USE_LATEST'; // 使用上一次的缓存数据，本次请求回来后更新缓存
+export const DOUBLE_CB = 'DOUBLE_CB'; // 分别使用缓存数据和本次请求的数据回调两次，更新缓存
+export const ONLY_CACHE = 'ONLY_CACHE'; // 只使用缓存数据，在缓存过期之前不请求网络
+export const NO_CACHE = 'NO_CACHE'; // 不使用缓存
+```
+
+我没有测试每种情况，所以这部分可能会有bug,发现bug请大家自行修改，很好的练手机会。

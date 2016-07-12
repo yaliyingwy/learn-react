@@ -2,6 +2,7 @@ import {
 	REQUEST_DOC_DONE,
 	REQUEST_DOC_FAIL,
 	REQUEST_DOC,
+	CALL_API,
 } from '../constants/actionType';
 
 export function requestDoc(url) {
@@ -40,4 +41,24 @@ export function requestDocDone(text) {
 
 export function requestDocFail(error) {
 	return { type: REQUEST_DOC_FAIL, error };
+}
+
+export function callApi(params) {
+  const {
+    api,
+    success,
+  } = params;
+
+  if (typeof api !== 'string') {
+    throw new Error('接口地址必须是字符串');
+  }
+
+  if (typeof success !== 'string') {
+    throw new Error('success 参数必须传，类型为actionType中定义');
+  }
+
+  return {
+    type: CALL_API,
+    payload: params,
+  };
 }

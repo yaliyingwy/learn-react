@@ -19,9 +19,23 @@ import {
 	requestDoc,
 	requestDocDone,
 	requestDocFail,
+	callApi,
 } from '../../actions/hello';
 
+import {
+	REQUEST_DOC_DONE,
+	REQUEST_DOC_FAIL,
+} from '../../constants/actionType';
+
+import cacheMap, {
+  USE_LATEST,
+  DOUBLE_CB,
+  NO_CACHE,
+  ONLY_CACHE,
+} from '../../constants/cache';
+
 import Toast from '../../components/hello/toast';
+import Loading from '../../components/hello/loading';
 
 class Hello extends Component {
 
@@ -36,6 +50,8 @@ class Hello extends Component {
 			request,
 			doc,
 			netBusy,
+			showLoading,
+			loadingText,
 		} = this.props;
 		return (
 			<div className="hello">
@@ -73,18 +89,31 @@ class Hello extends Component {
 				  busy={netBusy}
 				/>
 				<div>{doc}</div>
+
+				{(() => {
+					if (showLoading) {
+						return <Loading text={loadingText} />;
+					}
+				})()}
 			</div>
 		);
 	}
 }
 
 function mapStateToProps(state) {
-  const { btn, toast, hello } = state;
+  const { 
+  	btn, 
+  	toast, 
+  	hello,
+  	loading,
+  } = state;
   return {
   	btnEnabled: btn.get('enabled'),
   	toast,
   	netBusy: hello.get('netBusy'),
   	doc: hello.get('doc'),
+  	showLoading: loading.get('show'),
+  	loadingText: loading.get('text'),
   };
 }
 
@@ -93,7 +122,13 @@ function mapDispatchToProps(dispatch) {
     enableBtn: () => dispatch(enable()),
     disableBtn: () => dispatch(disable()),
     showToast: () => dispatch(toast(`当前时间戳${new Date().getTime()}`)),
-    request: () => dispatch(requestDoc('./lifecycle.html')),
+    request: () => dispatch(callApi({
+    	api: 'http://localhost:8080/webpack-dev-server/lifecycle.html',
+    	success: REQUEST_DOC_DONE,
+    	loading: true,
+    	cache: USE_LATEST,
+    	fail: REQUEST_DOC_FAIL,
+    })),
   };
 }
 
