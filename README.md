@@ -496,3 +496,23 @@ export const NO_CACHE = 'NO_CACHE'; // 不使用缓存
 ```
 
 我没有测试每种情况，所以这部分可能会有bug,发现bug请大家自行修改，很好的练手机会。
+
+
+## react-native (https://facebook.github.io/react-native/docs/network.html)
+
+上面的内容看完后，其实react-native就没有什么好讲的了
+
+1. react-native其实就是一系列跨平台组件的集合(Text,View, Image, Scrollview等)
+2. react-native的组件是facebook封装的原生的界面，所以性能不是问题（当然话也不能说满了）
+3. react-native跟html完全没有关系，布局实现了一个css的子集，具体支持哪些属性请看官方文档
+4. 利用这几个跨平台组件加上布局写出来的东西就是跨平台的，而且跟在redux中，app更wap代码不一样的地方就在components跟containers这种ui层面，其他部分的代码都是可以通用的
+
+可以看到发展到react-native，都已经跟html没关系了，所以很多技术人员非常讨厌h5这个暧昧的词语
+
+因为从架构上来分，可以有普通的网站（一般用zepto），webapp(单页应用), hybrid app(webview的混合app), react-native
+
+从使用的技术上来分，有react,angularjs,vue，zepto(jquery)几大主流阵营）
+
+基本上可以按使用jquery和完全不使用jquery划分为两个时代
+
+如果简单的一句“你们用的h5开发吗?“，根本就不知道怎么回答，只能”对，我们就是用的h5“蒙混过去
